@@ -1,5 +1,5 @@
 # NhapMonXuLyAnhSo-243_71ITAI40803_0101
-Nộp Bài + Readme
+Nộp Bài + Readme (Lab 2)
 
 README – Báo cáo xử lý ảnh (Bài 1–9)
 
@@ -8,60 +8,50 @@ MSSV: 2174802010072
 Lớp: 71ITAI40803
 GVHD: Nguyễn Thái Anh
 
-Ngôn ngữ: Python 3
-Thư viện: PIL, numpy, matplotlib, scipy, skimage
+📝 README – Biến Đổi Ảnh Cơ Bản và Nâng Cao
+📁 Thư mục: exercise/
+Chứa các ảnh đầu vào. Tất cả các kết quả xử lý đều được lưu lại tại đây với tiền tố tương ứng (inverse_, fft_, v.v.).
 
-Bài 1: Tách màu RGB
-Tách ảnh thành 3 ảnh chỉ hiển thị màu Đỏ (R), Xanh Lá (G), và Xanh Dương (B).
+🔹 Câu 1 – Biến đổi ảnh cơ bản (phím I, G, L, H, C)
+Mục tiêu: Thực hiện các phép biến đổi cơ bản trên ảnh xám (grayscale).
 
-✅ Ưu điểm: Dễ nhìn thấy sự phân bố từng kênh màu.
-❌ Nhược điểm: Không hiển thị đầy đủ nội dung ảnh khi chỉ giữ một kênh.
+Phím	Phép biến đổi	Giải thích ngắn gọn
+I	Inverse (âm bản)	Đổi màu mỗi pixel thành 255 - pixel.
+G	Gamma Correction	Tăng/giảm độ sáng theo công thức phi tuyến.
+L	Log Transformation	Làm sáng vùng tối, nén vùng sáng.
+H	Histogram Equalization	Cân bằng độ sáng, tăng tương phản tổng thể.
+C	Contrast Stretching	Co giãn độ tương phản dựa trên ngưỡng 2%-98%.
 
-Bài 2: Hoán đổi màu RGB
-Hoán đổi thứ tự các kênh màu trong ảnh, ví dụ: R ↔ B.
+🔹 Câu 2 – Biến đổi ảnh tần số (phím F, L, H)
+Mục tiêu: Biến đổi ảnh sang miền tần số với Fourier và lọc Butterworth.
 
-✅ Ưu điểm: Giúp hiểu ảnh thay đổi như thế nào khi kênh màu bị đổi.
-❌ Nhược điểm: Không có ứng dụng trực tiếp trong thực tế.
+Phím	Phép biến đổi	Giải thích ngắn gọn
+F	Fast Fourier Transform (FFT)	Hiển thị biên độ phổ tần số của ảnh.
+L	Butterworth Lowpass Filter	Giữ vùng tần số thấp (ảnh mịn hơn).
+H	Butterworth Highpass Filter	Giữ vùng tần số cao (làm nổi chi tiết).
 
-Bài 3: Chuyển hệ màu HSV
-Chuyển ảnh RGB sang HSV, và hiển thị riêng từng kênh H, S, V.
+🔹 Câu 3 – Hoán đổi RGB + Biến đổi cơ bản ngẫu nhiên
+Mục tiêu:
 
-✅ Ưu điểm: HSV phản ánh rõ hơn màu sắc (Hue), độ bão hòa (Saturation), độ sáng (Value).
-❌ Nhược điểm: Phải chuyển đổi thủ công, tốn thời gian tính toán.
+Đổi thứ tự màu kênh RGB ngẫu nhiên (ví dụ: BGR → GBR).
 
-Bài 4: Thay đổi kênh HSV
-Chỉnh H tăng 1/3, V giảm 3/4, giữ nguyên S.
+Chuyển sang ảnh xám.
 
-✅ Ưu điểm: Làm thay đổi màu ảnh một cách có kiểm soát.
-❌ Nhược điểm: Có thể gây ảnh bị tối quá hoặc lệch màu.
+Áp dụng ngẫu nhiên 1 trong 5 phép biến đổi ở Câu 1.
 
-Bài 5: Dùng Mean Filter
-Dùng mean filter để làm mờ ảnh trong thư mục Exercise.
+Tác dụng: Kết hợp xử lý không gian màu và biến đổi sáng cơ bản.
 
-✅ Ưu điểm: Giảm nhiễu nhẹ, làm mượt hình ảnh.
-❌ Nhược điểm: Làm mờ chi tiết và biên ảnh.
+🔹 Câu 4 – Hoán đổi RGB + Biến đổi tần số ngẫu nhiên + Lọc nâng cao
+Mục tiêu:
 
-Bài 6: So sánh các bộ lọc khử nhiễu
-So sánh Mean và Median Filter.
+Đổi thứ tự kênh RGB ngẫu nhiên.
 
-✅ Ưu điểm: Median filter xử lý tốt nhiễu muối tiêu.
-❌ Nhược điểm: Mean filter yếu trong môi trường nhiễu mạnh.
+Chuyển sang ảnh xám.
 
-Bài 7: Tìm biên ảnh
-Sau khi khử nhiễu, dùng Sobel/Canny để phát hiện biên.
+Áp dụng ngẫu nhiên 1 trong 3 phép biến đổi ở Câu 2.
 
-✅ Ưu điểm: Xác định ranh giới vật thể rõ ràng.
-❌ Nhược điểm: Nhạy cảm với nhiễu nếu không khử trước.
+Thêm bước lọc:
 
-Bài 8: Đổi màu RGB ngẫu nhiên
-Trộn thứ tự kênh RGB ngẫu nhiên sau khi khử nhiễu.
+Nếu chọn Butterworth Lowpass → áp dụng Min Filter (làm mịn thêm).
 
-✅ Ưu điểm: Tạo ảnh mới thú vị, dễ quan sát ảnh hưởng màu.
-❌ Nhược điểm: Không phù hợp với xử lý ảnh thực tế.
-
-Bài 9: Đổi màu HSV ngẫu nhiên (không trùng)
-Chuyển sang HSV, đổi hue khác nhau cho mỗi ảnh (không trùng), rồi chuyển lại RGB.
-
-✅ Ưu điểm: Tạo các phiên bản ảnh màu sắc khác biệt rõ ràng.
-❌ Nhược điểm: Phải kiểm tra trùng hue, tốn thêm bước xử lý.
-
+Nếu chọn Butterworth Highpass → áp dụng Max Filter (làm nổi bật chi tiết).
