@@ -1,7 +1,7 @@
 # NhapMonXuLyAnhSo-243_71ITAI40803_0101
 Nộp Bài + Readme (Lab 2)
 
-README – Báo cáo xử lý ảnh (Bài 1–9)
+README – Báo cáo xử lý ảnh (Bài 1–4)
 
 Họ tên: Lê Quý Phương
 MSSV: 2174802010072
