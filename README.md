@@ -8,50 +8,86 @@ MSSV: 2174802010072
 Lớp: 71ITAI40803
 GVHD: Nguyễn Thái Anh
 
-📝 README – Biến Đổi Ảnh Cơ Bản và Nâng Cao
+📝 README – Lab 3
 📁 Thư mục: exercise/
-Chứa các ảnh đầu vào. Tất cả các kết quả xử lý đều được lưu lại tại đây với tiền tố tương ứng (inverse_, fft_, v.v.).
+Chứa các ảnh đầu vào. Tất cả các kết quả xử lý đều được lưu lại tại đây với tiền tố tương ứng.
 
-🔹 Câu 1 – Biến đổi ảnh cơ bản (phím I, G, L, H, C)
-Mục tiêu: Thực hiện các phép biến đổi cơ bản trên ảnh xám (grayscale).
+## 📌 Nội dung các bài
 
-Phím	Phép biến đổi	Giải thích ngắn gọn
-I	Inverse (âm bản)	Đổi màu mỗi pixel thành 255 - pixel.
-G	Gamma Correction	Tăng/giảm độ sáng theo công thức phi tuyến.
-L	Log Transformation	Làm sáng vùng tối, nén vùng sáng.
-H	Histogram Equalization	Cân bằng độ sáng, tăng tương phản tổng thể.
-C	Contrast Stretching	Co giãn độ tương phản dựa trên ngưỡng 2%-98%.
+- **Cắt ảnh và lưu lại:**
+```python
+data = iio.imread('fruit.jpg')
+bmg = data[800:1200 ,1500:2000]
+iio.imsave('orange.jpg', bmg)
+```
 
-🔹 Câu 2 – Biến đổi ảnh tần số (phím F, L, H)
-Mục tiêu: Biến đổi ảnh sang miền tần số với Fourier và lọc Butterworth.
+- **Dịch chuyển ảnh x/y:**
+```python
+data = iio.imread('fruit.jpg', pilmode='L')
+shifted = nd.shift(data, (50, -30))
+```
 
-Phím	Phép biến đổi	Giải thích ngắn gọn
-F	Fast Fourier Transform (FFT)	Hiển thị biên độ phổ tần số của ảnh.
-L	Butterworth Lowpass Filter	Giữ vùng tần số thấp (ảnh mịn hơn).
-H	Butterworth Highpass Filter	Giữ vùng tần số cao (làm nổi chi tiết).
+- **Phóng to / Thu nhỏ ảnh:**
+```python
+zoom_in = nd.zoom(data, (3, 3, 1))
+zoom_out = nd.zoom(data, (0.3, 0.3, 1))
+```
 
-🔹 Câu 3 – Hoán đổi RGB + Biến đổi cơ bản ngẫu nhiên
-Mục tiêu:
+- **Xoay ảnh 45°:**
+```python
+nd.rotate(data, 45, reshape=True)
+nd.rotate(data, 45, reshape=False)
+```
 
-Đổi thứ tự màu kênh RGB ngẫu nhiên (ví dụ: BGR → GBR).
+- **Dilation & Erosion (5x5):**
+```python
+dilate = nd.grey_dilation(data, size=(5, 5, 1))
+erode = nd.grey_erosion(data, size=(5, 5, 1))
+```
 
-Chuyển sang ảnh xám.
+- **Biến đổi hình học (wave effect):**
+```python
+def GeoFun(c): return 5*np.sin(c[0]/5)+c[0], 5*np.sin(c[1]/5)+c[1]
+warped = nd.geometric_transform(data, GeoFun)
+```
+## 📌 Nội dung các bài
 
-Áp dụng ngẫu nhiên 1 trong 5 phép biến đổi ở Câu 1.
+### Bài 1: Tịnh tiến và hiệu ứng sóng ảnh Kiwi
+- Dịch ảnh kiwi 50px sang phải, 30px xuống dưới.
+- Áp dụng hiệu ứng sóng bằng `map_coordinates`.
+- Hiển thị và lưu ảnh kết quả: `kiwi_wave.jpg`.
 
-Tác dụng: Kết hợp xử lý không gian màu và biến đổi sáng cơ bản.
+### Bài 2: Gradient màu cho trái cây
+- Đọc ảnh đu đủ và dưa hấu (`RGBA`).
+- Áp dụng gradient màu:
+  - Đu đủ: đỏ → xanh lá.
+  - Dưa hấu: vàng → tím.
+- Ghép 2 ảnh có alpha nền trong suốt, lưu `papaya_watermelon_gradient.png`.
 
-🔹 Câu 4 – Hoán đổi RGB + Biến đổi tần số ngẫu nhiên + Lọc nâng cao
-Mục tiêu:
+### Bài 3: Xoay và phản chiếu ảnh núi và thuyền
+- Xoay 45° không thay đổi kích thước.
+- Phản chiếu dọc (vertical mirror).
+- Ghép lên nền trắng và lưu: `mountain_boat_mirror.jpg`.
 
-Đổi thứ tự kênh RGB ngẫu nhiên.
+### Bài 4: Phóng to và uốn cong ảnh chùa
+- Phóng to ảnh 5 lần.
+- Uốn cong bằng tọa độ sin → hiệu ứng wave warp.
+- Lưu ảnh kết quả: `pagoda_warped.jpg`.
 
-Chuyển sang ảnh xám.
+### Bài 5: Menu xử lý ảnh tương tác
+- Cho phép chọn ảnh từ danh sách.
+- Các phép xử lý hỗ trợ:
+  - Tịnh tiến ảnh (theo x/y).
+  - Xoay ảnh (tùy chọn reshape).
+  - Phóng to / thu nhỏ.
+  - Làm mờ Gaussian.
+  - Biến đổi sóng (wave distortion).
+- Lưu ảnh kết quả: `transformed_image.jpg`.
 
-Áp dụng ngẫu nhiên 1 trong 3 phép biến đổi ở Câu 2.
+---
+## 🧪 Yêu cầu
 
-Thêm bước lọc:
+- Ảnh `fruit.jpg`, `world_cup.jpg` có trong thư mục.
+- Kết quả hiển thị bằng matplotlib hoặc lưu bằng `iio.imsave()`.
 
-Nếu chọn Butterworth Lowpass → áp dụng Min Filter (làm mịn thêm).
-
-Nếu chọn Butterworth Highpass → áp dụng Max Filter (làm nổi bật chi tiết).
+🎓 Thực hành xử lý ảnh cơ bản bằng Python.
